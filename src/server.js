@@ -15,16 +15,14 @@ const config = {
 }
 
 // app.disable('x-powered-by')
-app.use(cors())
-app.use(json())
-app.use(urlencoded({ extended: true }))
+// app.use(cors())
 
 app.get('/', (req, res) => {
   console.log(config, 'config')
   res.status(200).end()
 })
 
-app.post('/webhook', line.middleware(config), (req, res) => {
+app.post('/webhook', middleware(config), (req, res) => {
   console.log('Hello WebHook')
   console.log(req)
   Promise.all(req.body.events.map(handleEvent)).then(result => res.json(result))
