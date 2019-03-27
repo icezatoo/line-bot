@@ -11,8 +11,8 @@ export const port = process.env.PORT || 4000
 
 // create LINE SDK config from env variables
 const config = {
-  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
-  channelSecret: process.env.LINE_CHANNEL_SECRET
+  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN.toString(),
+  channelSecret: process.env.LINE_CHANNEL_SECRET.toString()
 }
 
 const client = new line.Client(config)
