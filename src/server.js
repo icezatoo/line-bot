@@ -11,8 +11,8 @@ export const port = process.env.PORT || 4000
 
 // create LINE SDK config from env variables
 const config = {
-  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN.toString(),
-  channelSecret: process.env.LINE_CHANNEL_SECRET.toString()
+  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
+  channelSecret: process.env.LINE_CHANNEL_SECRET
 }
 
 const client = new line.Client(config)
@@ -21,6 +21,11 @@ app.disable('x-powered-by')
 app.use(cors())
 app.use(json())
 app.use(urlencoded({ extended: true }))
+
+app.get('/', (req, res) => {
+  console.log(config, 'config')
+  res.status(200).end()
+})
 
 app.post('/webhook', (req, res) => {
   res.status(200).end()
