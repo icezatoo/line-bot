@@ -2,8 +2,7 @@ import express from 'express'
 import { json, urlencoded } from 'body-parser'
 import cors from 'cors'
 import dotenv from 'dotenv'
-// import * as line from '@line/bot-sdk'
-import { middleware, Client } from '@line/bot-sdk'
+import line from '@line/bot-sdk'
 
 dotenv.config()
 export const app = express()
@@ -15,14 +14,14 @@ const config = {
   channelSecret: process.env.LINE_CHANNEL_SECRET
 }
 
-const client = new Client(config)
+const client = new line.Client(config)
 
 app.disable('x-powered-by')
 app.use(cors())
 app.use(json())
 app.use(urlencoded({ extended: true }))
 
-app.post('/webhook', middleware(config), (req, res) => {
+app.post('/webhook', line.middleware(config), (req, res) => {
   Promise.all(req.body.events.map(handleEvent)).then(result => res.json(result))
 })
 
