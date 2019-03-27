@@ -1,6 +1,4 @@
 import express from 'express'
-import { json, urlencoded } from 'body-parser'
-import cors from 'cors'
 import dotenv from 'dotenv'
 import * as line from '@line/bot-sdk'
 
@@ -14,17 +12,9 @@ const config = {
   channelSecret: process.env.LINE_CHANNEL_SECRET
 }
 
-// app.disable('x-powered-by')
-// app.use(cors())
-
-app.get('/', (req, res) => {
-  console.log(config, 'config')
-  res.status(200).end()
-})
-
 app.post('/webhook', line.middleware(config), (req, res) => {
   console.log('Hello WebHook')
-  console.log(req)
+  // console.log(req)
   Promise.all(req.body.events.map(handleEvent)).then(result => res.json(result))
 })
 
