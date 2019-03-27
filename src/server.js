@@ -13,16 +13,12 @@ const config = {
 }
 
 app.post('/webhook', line.middleware(config), (req, res) => {
-  console.log('Hello WebHook')
-  // console.log(req)
   Promise.all(req.body.events.map(handleEvent)).then(result => res.json(result))
 })
 
 // create LINE SDK client
 const client = new line.Client(config)
-
 function handleEvent(event) {
-  console.log(event, 'event Line')
   if (event.type !== 'message' || event.message.type !== 'text') {
     return Promise.resolve(null)
   }
