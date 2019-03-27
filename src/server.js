@@ -23,7 +23,14 @@ app.use(json())
 app.use(urlencoded({ extended: true }))
 
 app.post('/webhook', line.middleware(config), (req, res) => {
-  Promise.all(req.body.events.map(handleEvent)).then(result => res.json(result))
+  try {
+    console.error(req, 'req')
+    Promise.all(req.body.events.map(handleEvent)).then(result =>
+      res.json(result)
+    )
+  } catch (error) {
+    console.error(error)
+  }
 })
 
 function handleEvent(event) {
