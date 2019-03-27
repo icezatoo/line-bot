@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
   res.status(200).end()
 })
 
-app.post('/webhook', middleware(config), (req, res) => {
+app.post('/webhook', line.middleware(config), (req, res) => {
   console.log('Hello WebHook')
   console.log(req)
   Promise.all(req.body.events.map(handleEvent)).then(result => res.json(result))
