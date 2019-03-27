@@ -2,7 +2,8 @@ import express from 'express'
 import { json, urlencoded } from 'body-parser'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import line from '@line/bot-sdk'
+import * as line from '@line/bot-sdk'
+// import { middleware, Client } from '@line/bot-sdk'
 
 dotenv.config()
 export const app = express()
