@@ -22,12 +22,26 @@ app.use(cors())
 app.use(json())
 app.use(urlencoded({ extended: true }))
 
+app.get('/', (req, res) => {
+  res.send(`Hi there! This is a nodejs-line-api running on PORT: ${PORT}`)
+})
+
 app.post('/webhook', line.middleware(config), (req, res) => {
   try {
-    console.error(req, 'req')
-    Promise.all(req.body.events.map(handleEvent)).then(result =>
-      res.json(result)
-    )
+    // console.error(req, 'req')
+    let replyToken = req.body.events[0].replyToken
+    let msg = req.body.events[0].message.text
+
+    console.log(`Message token : ${replyToken}`)
+    console.log(`Message from chat : ${msg}`)
+
+    res.json({
+      status: 200,
+      message: `Webhook is working!`
+    })
+    // Promise.all(req.body.events.map(handleEvent)).then(result =>
+    //   res.json(result)
+    // )
   } catch (error) {
     console.error(error)
   }
