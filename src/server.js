@@ -2,7 +2,7 @@ import express from 'express'
 import { json, urlencoded } from 'body-parser'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import * as line from '@line/bot-sdk'
+// import * as line from '@line/bot-sdk'
 // import { middleware, Client } from '@line/bot-sdk'
 
 dotenv.config()
@@ -22,13 +22,14 @@ app.use(cors())
 app.use(json())
 app.use(urlencoded({ extended: true }))
 
-app.post('/webhook', line.middleware(config), (req, res) => {
-  Promise.all(req.body.events.map(handleEvent))
-    .then(result => res.json(result))
-    .catch(err => {
-      console.error(err)
-      res.status(500).end()
-    })
+app.post('/webhook', (req, res) => {
+  res.status(200).end()
+  // Promise.all(req.body.events.map(handleEvent))
+  //   .then(result => res.json(result))
+  //   .catch(err => {
+  //     console.error(err)
+  //     res.status(500).end()
+  //   })
 })
 
 function handleEvent(event) {
