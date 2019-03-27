@@ -27,10 +27,10 @@ app.post('/webhook', middleware(config), (req, res) => {
 })
 
 function handleEvent(event) {
+  console.log(event, 'event Line')
   if (event.type !== 'message' || event.message.type !== 'text') {
     return Promise.resolve(null)
   }
-
   return client.replyMessage(event.replyToken, {
     type: 'text',
     text: event.message.text
