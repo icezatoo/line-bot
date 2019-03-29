@@ -21,7 +21,6 @@ app.post('/webhook', line.middleware(config), async (req, res) => {
 
 async function handleWebHook(event) {
   if (event.type === 'message') {
-    console.info('event type handleWebHook', event)
     return await handleMessage(event)
   } else {
     return null
@@ -33,22 +32,16 @@ const client = new line.Client(config)
 
 // # HandleMessage
 async function handleMessage(eventMessage) {
-  console.info(eventMessage)
   const { replyToken, message } = eventMessage
-  const reply = await handleMessageText(message)
-  console.log('reply handleMessageText ', reply)
-  return await client.replyMessage(replyToken, toMessages(reply))
-  // if (message.type === 'text') {
-  //   console.log('Call text')
-  //   const reply = handleMessageText(message)
-  //   await client.replyMessage(replyToken, toMessages(reply))
-  // } else if (message.type === 'image') {
-
-  //   const content = await client.getMessageContent(message.id)
-  //   const buffer = await readAsBuffer(content)
-  //   const reply = await handleImage(buffer)
-  //   await client.replyMessage(replyToken, toMessages(reply))
-  // }
+  if (message.type === 'text') {
+    const reply = await handleMessageText(message)
+    return await client.replyMessage(replyToken, toMessages(reply))
+  } else if (message.type === 'image') {
+    const content = await client.getMessageContent(message.id)
+    const buffer = await readAsBuffer(content)
+    const reply = await handleImage(buffer)
+    return await client.replyMessage(replyToken, toMessages(reply))
+  }
 }
 
 async function handleMessageText({ text }) {
