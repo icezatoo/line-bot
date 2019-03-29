@@ -24,15 +24,18 @@ app.post('/webhook', line.middleware(config), (req, res) => {
 
 async function handleWebHook(event) {
   const { replyToken, message } = event
-  // console.log(message, 'message')
+  console.log(message, 'message')
   if (message.type !== 'message') return Promise.resolve(null)
-  if (message.type === 'image') {
+
+  if (message.type === 'text') {
+    console.log('Call text')
+    const reply = handleMessageText(message)
+    return await client.replyMessage(replyToken, toMessages(reply))
+  } else if (message.type === 'image') {
+    console.log('Call image')
     const content = await client.getMessageContent(message.id)
     const buffer = await readAsBuffer(content)
     const reply = await handleImage(buffer)
-    return await client.replyMessage(replyToken, toMessages(reply))
-  } else if (message.type === 'text') {
-    const reply = handleMessageText(message)
     return await client.replyMessage(replyToken, toMessages(reply))
   }
 }
