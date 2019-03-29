@@ -22,9 +22,9 @@ app.post('/webhook', line.middleware(config), (req, res) => {
   )
 })
 
-async function handleWebHook(event) {
+function handleWebHook(event) {
   if (event.type === 'message') {
-    return await handleMessage(event)
+    return handleMessage(event)
   } else {
     return Promise.resolve(null)
   }
