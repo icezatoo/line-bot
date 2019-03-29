@@ -20,7 +20,7 @@ app.post('/webhook', line.middleware(config), async (req, res) => {
   await Promise.all(
     req.body.events.map(async event => {
       if (event.type === 'message') {
-        await handleWebHook(event)
+        return await handleWebHook(event)
       }
     })
   ).then(result => res.json(result))
