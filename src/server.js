@@ -16,37 +16,37 @@ const config = {
 // create LINE SDK client
 const client = new line.Client(config)
 
-app.post('/webhook', line.middleware(config), async (req, res) => {
-  Promise.all(req.body.events.map(handleEvent)).then(result => res.json(result))
+app.post('/webhook', line.middleware(config), (req, res) => {
+  Promise.all(req.body.events.map(handleWebHook)).then(result =>
+    res.json(result)
+  )
 })
 
 async function handleWebHook(event) {
   if (event.type === 'message') {
-    console.log('test')
-    console.log('debug  handleMessage', await handleMessage())
-    return await null
+    return await handleMessage(event)
   } else {
-    return await null
+    return Promise.resolve(null)
   }
 }
 
-async function handleMessage() {
-  const { replyToken, message } = event
+async function handleMessage(eventMessage) {
+  const { replyToken, message } = eventMessage
   if (message.type === 'text') {
     console.log('Call text')
     const reply = handleMessageText(message)
-    await client.replyMessage(replyToken, toMessages(reply))
+    return await client.replyMessage(replyToken, toMessages(reply))
   } else if (message.type === 'image') {
     console.log('Call image')
     const content = await client.getMessageContent(message.id)
     const buffer = await readAsBuffer(content)
     const reply = await handleImage(buffer)
-    await client.replyMessage(replyToken, toMessages(reply))
+    return await client.replyMessage(replyToken, toMessages(reply))
   }
 }
 
-async function handleMessageText(event) {
-  return message.text
+async function handleMessageText({ text }) {
+  return text
 }
 
 async function handleImage(imageBuffer) {
