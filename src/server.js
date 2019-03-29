@@ -16,17 +16,17 @@ const config = {
 // create LINE SDK client
 const client = new line.Client(config)
 
-app.post('/webhook', line.middleware(config), (req, res) => {
-  Promise.all(req.body.events.map(handleWebHook)).then(result =>
-    res.json(result)
-  )
+app.post('/webhook', line.middleware(config), async (req, res) => {
+  await Promise.all(
+    req.body.events.map(async event => await handleWebHook(event))
+  ).then(result => res.json(result))
 })
 
-function handleWebHook(event) {
+async function handleWebHook(event) {
   if (event.type === 'message') {
-    return handleMessage(event)
+    return await handleMessage(event)
   } else {
-    return Promise.resolve(null)
+    return null
   }
 }
 
