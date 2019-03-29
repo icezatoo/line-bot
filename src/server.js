@@ -17,16 +17,16 @@ const config = {
 const client = new line.Client(config)
 
 app.post('/webhook', line.middleware(config), async (req, res) => {
-  await Promise.all(
-    req.body.events.map(async event => await handleWebHook(event))
-  ).then(result => res.json(result))
+  Promise.all(req.body.events.map(handleEvent)).then(result => res.json(result))
 })
 
 async function handleWebHook(event) {
   if (event.type === 'message') {
-    return await handleMessage(event)
+    console.log('test')
+    console.log('debug  handleMessage', await handleMessage())
+    return await null
   } else {
-    return null
+    return await null
   }
 }
 
@@ -35,13 +35,13 @@ async function handleMessage() {
   if (message.type === 'text') {
     console.log('Call text')
     const reply = handleMessageText(message)
-    return await client.replyMessage(replyToken, toMessages(reply))
+    await client.replyMessage(replyToken, toMessages(reply))
   } else if (message.type === 'image') {
     console.log('Call image')
     const content = await client.getMessageContent(message.id)
     const buffer = await readAsBuffer(content)
     const reply = await handleImage(buffer)
-    return await client.replyMessage(replyToken, toMessages(reply))
+    await client.replyMessage(replyToken, toMessages(reply))
   }
 }
 
