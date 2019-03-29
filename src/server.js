@@ -35,7 +35,7 @@ const client = new line.Client(config)
 async function handleMessage(eventMessage) {
   console.info(eventMessage)
   const { replyToken, message } = eventMessage
-  const reply = handleMessageText(message)
+  const reply = await handleMessageText(message)
   console.log('reply handleMessageText ', reply)
   return await client.replyMessage(replyToken, toMessages(reply))
   // if (message.type === 'text') {
