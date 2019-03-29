@@ -23,10 +23,15 @@ app.post('/webhook', line.middleware(config), (req, res) => {
 })
 
 async function handleWebHook(event) {
-  const { replyToken, message } = event
-  console.log(message, 'message')
-  if (message.type !== 'message') return Promise.resolve(null)
+  if (event.type === 'message') {
+    return await handleMessage(event)
+  } else {
+    return Promise.resolve(null)
+  }
+}
 
+async function handleMessage() {
+  const { replyToken, message } = event
   if (message.type === 'text') {
     console.log('Call text')
     const reply = handleMessageText(message)
@@ -41,7 +46,6 @@ async function handleWebHook(event) {
 }
 
 async function handleMessageText(event) {
-  console.log(event, 'handleMessageText')
   return message.text
 }
 
